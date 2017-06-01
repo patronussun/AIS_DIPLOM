@@ -40,7 +40,7 @@ namespace AIS_DIBLOM
                 admin.Password = "";
                 admin.isAdmin = true;
                 admin.isBlocked = false;
-                admin.isPasswordRestricted = false;
+                //admin.isPasswordRestricted = false;
                 Users.Data.Add(admin);
             }
         }
@@ -118,21 +118,21 @@ namespace AIS_DIBLOM
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public bool isPasswordRestrictionsOkay(string s)
-        {
-            string alpha = "1234567890-_,.!;:?()";
-            foreach (char c in s)
-            {
-                if (!alpha.Contains(c))
-                    return false;
-            }
-            return true;
-        }
+        //public bool isPasswordRestrictionsOkay(string s)
+        //{
+        //    string alpha = "1234567890-_,.!;:?()";
+        //    foreach (char c in s)
+        //    {
+        //        if (!alpha.Contains(c))
+        //            return false;
+        //    }
+        //    return true;
+        //}
 
-        private void btnChangePassword_Click(object sender, EventArgs e)
+        public void btnChangePassword_Click(object sender, EventArgs e)
         {
 
-            if ((MD5(tbOldPassword.Text) == currentUser.Password && tbOldPassword.Text != "" || tbOldPassword.Text == "") && tbNewPassword.Text == tbNewPasswordAgain.Text && ((isPasswordRestrictionsOkay(tbNewPassword.Text) && currentUser.isPasswordRestricted == true) || currentUser.isPasswordRestricted == false))
+            if ((MD5(tbOldPassword.Text) == currentUser.Password && tbOldPassword.Text != "" || tbOldPassword.Text == "") && tbNewPassword.Text == tbNewPasswordAgain.Text) /*&& ((isPasswordRestrictionsOkay(tbNewPassword.Text) /*&& currentUser.isPasswordRestricted == true) || currentUser.isPasswordRestricted == false)*/
             {
                 MessageBox.Show("Пароль изменен успешно!");
                 currentUser.Password = tbNewPassword.Text;
@@ -160,36 +160,36 @@ namespace AIS_DIBLOM
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
+            //try
+            //{
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(UsersCatalog));
+            FileStream fs = new FileStream("UsersDEC.xml", FileMode.Create, FileAccess.Write, FileShare.Write);
+            xmlSerializer.Serialize(fs, Users);
+            fs.Close();
+
+            //Encrypt this file now
+            string xmlFileText = File.ReadAllText("UsersDEC.xml");
+
+            //CREATE HASH FILE
+            string HASH = MD5(xmlFileText);
+            File.WriteAllText("UsersCatalogHASH.txt", HASH);
+
+            //Encrypt
+            using (TripleDESCryptoServiceProvider myTripleDES = new TripleDESCryptoServiceProvider())
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(UsersCatalog));
-                FileStream fs = new FileStream("UsersDEC.xml", FileMode.Create, FileAccess.Write, FileShare.Write);
-                xmlSerializer.Serialize(fs, Users);
-                fs.Close();
+                myTripleDES.Mode = CipherMode.ECB;
+                // Encrypt the string to an array of bytes.
+                byte[] encrypted = EncryptStringToBytes(xmlFileText, KEY, IV);
 
-                //Encrypt this file now
-                string xmlFileText = File.ReadAllText("UsersDEC.xml");
+                //Save array of bytes
+                File.WriteAllBytes("UsersENC.xml", encrypted);
 
-                //CREATE HASH FILE
-                string HASH = MD5(xmlFileText);
-                File.WriteAllText("UsersCatalogHASH.txt", HASH);
-
-                //Encrypt
-                using (TripleDESCryptoServiceProvider myTripleDES = new TripleDESCryptoServiceProvider())
-                {
-                    myTripleDES.Mode = CipherMode.ECB;
-                    // Encrypt the string to an array of bytes.
-                    byte[] encrypted = EncryptStringToBytes(xmlFileText, KEY, IV);
-
-                    //Save array of bytes
-                    File.WriteAllBytes("UsersENC.xml", encrypted);
-
-                    //Delete decrypted file;
-                    File.Delete("UsersDEC.xml");
-                }
+                //Delete decrypted file;
+                File.Delete("UsersDEC.xml");
             }
-            catch
-            { MessageBox.Show("Ошибка"); }
+            //}
+            //catch
+            //{ MessageBox.Show("Ошибка"); }
         }
 
         /// <summary>
@@ -340,13 +340,13 @@ namespace AIS_DIBLOM
                 tmp += "|"; //Separator to handle login
                 tmp += "\tБлокировка = ";
                 tmp += u.isBlocked;
-                tmp += "\tОграничение = ";
-                tmp += u.isPasswordRestricted;
+                //tmp += "\tОграничение = ";
+                // tmp += u.isPasswordRestricted;
                 listUsers.Items.Add(tmp);
             }
         }
 
-        private void btnAddNewUser_Click(object sender, EventArgs e)
+        public void btnAddNewUser_Click(object sender, EventArgs e)
         {
             foreach (User u in Users.Data)
             {
@@ -362,7 +362,7 @@ namespace AIS_DIBLOM
             newUser.Password = "";
             newUser.isAdmin = false;
             newUser.isBlocked = false;
-            newUser.isPasswordRestricted = true;
+            // newUser.isPasswordRestricted = true;
             Users.Data.Add(newUser);
             tbAddNewUser.Text = "";
 
@@ -374,7 +374,7 @@ namespace AIS_DIBLOM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_Click_1(object sender, EventArgs e)
+        public void button1_Click_1(object sender, EventArgs e)
         {
             if (listUsers.SelectedItem == null)
                 return;
@@ -401,25 +401,25 @@ namespace AIS_DIBLOM
         /// <param name="e"></param>
         private void btnSwitchPassRestr_Click(object sender, EventArgs e)
         {
-            if (listUsers.SelectedItem == null)
-                return;
-            string selected = listUsers.GetItemText(listUsers.SelectedItem);
+            /*  if (listUsers.SelectedItem == null)
+                  return;
+              string selected = listUsers.GetItemText(listUsers.SelectedItem);
 
-            string[] tmp = selected.Split('|');
+              string[] tmp = selected.Split('|');
 
-            for (int i = 0; i < Users.Data.Count; i++)
-            {
-                if (tmp[0] == Users.Data[i].Login)
-                {
-                    if (!Users.Data[i].isPasswordRestricted)
-                        Users.Data[i].isPasswordRestricted = true;
-                    else
-                        Users.Data[i].isPasswordRestricted = false;
-                    break;
-                }
-            }
+              for (int i = 0; i < Users.Data.Count; i++)
+              {
+                  if (tmp[0] == Users.Data[i].Login)
+                  {
+                      if (!Users.Data[i].isPasswordRestricted)
+                          Users.Data[i].isPasswordRestricted = true;
+                      else
+                          Users.Data[i].isPasswordRestricted = false;
+                      break;
+                  }
+              }
 
-            updateListUsers();
+              updateListUsers();*/
         }
 
         /// <summary>
@@ -454,7 +454,7 @@ namespace AIS_DIBLOM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Form1_Load(object sender, EventArgs e)
+        public void Form1_Load(object sender, EventArgs e)
         {
             if (!File.Exists("UsersENC.xml"))
             {
@@ -501,6 +501,42 @@ namespace AIS_DIBLOM
             f.ShowDialog();
             this.Hide();
         }
+
+        public void button_save_xml_Click(object sender, EventArgs e)
+        {
+            //  try
+            // {
+            //XmlSerializer xmlSerializer = new XmlSerializer(typeof(UsersCatalog));
+            //FileStream fs = new FileStream("UsersDEC.xml", FileMode.Create, FileAccess.Write, FileShare.Write);
+            //xmlSerializer.Serialize(fs, Users);
+            //fs.Close();
+
+            ////Encrypt this file now
+            //string xmlFileText = File.ReadAllText("UsersDEC.xml");
+
+            ////CREATE HASH FILE
+            //string HASH = MD5(xmlFileText);
+            //File.WriteAllText("UsersCatalogHASH.txt", HASH);
+
+            ////Encrypt
+            //using (TripleDESCryptoServiceProvider myTripleDES = new TripleDESCryptoServiceProvider())
+            //{
+            //    myTripleDES.Mode = CipherMode.ECB;
+            //    // Encrypt the string to an array of bytes.
+            //    byte[] encrypted = EncryptStringToBytes(xmlFileText, KEY, IV);
+
+            //    //Save array of bytes
+            //    File.WriteAllBytes("UsersENC.xml", encrypted);
+
+            //    //Delete decrypted file;
+            //    File.Delete("UsersDEC.xml");
+            //}
+            //   }
+            // catch
+            // { MessageBox.Show("Ошибка"); }
+        }
     }
+
+
 }
 

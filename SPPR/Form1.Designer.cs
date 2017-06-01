@@ -37,6 +37,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.входToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.личныйКабинетToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.администрированиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +61,7 @@
             this.btnSwitchPassRestr = new System.Windows.Forms.Button();
             this.btnSwitchBlock = new System.Windows.Forms.Button();
             this.listUsers = new System.Windows.Forms.ListBox();
-            this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button_save_xml = new System.Windows.Forms.Button();
             this.gbEnter.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panelLK.SuspendLayout();
@@ -140,7 +141,7 @@
             this.справкаToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(618, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(603, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -159,6 +160,13 @@
             this.личныйКабинетToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
             this.личныйКабинетToolStripMenuItem.Text = "Личный кабинет";
             this.личныйКабинетToolStripMenuItem.Click += new System.EventHandler(this.личныйКабинетToolStripMenuItem_Click);
+            // 
+            // dashboardToolStripMenuItem
+            // 
+            this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
+            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.dashboardToolStripMenuItem.Text = "Dashboard";
+            this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
             // 
             // администрированиеToolStripMenuItem
             // 
@@ -294,11 +302,12 @@
             // 
             // panelAD
             // 
+            this.panelAD.Controls.Add(this.button_save_xml);
             this.panelAD.Controls.Add(this.button1);
             this.panelAD.Controls.Add(this.groupBox2);
-            this.panelAD.Controls.Add(this.btnSwitchPassRestr);
             this.panelAD.Controls.Add(this.btnSwitchBlock);
             this.panelAD.Controls.Add(this.listUsers);
+            this.panelAD.Controls.Add(this.btnSwitchPassRestr);
             this.panelAD.Location = new System.Drawing.Point(12, 31);
             this.panelAD.Name = "panelAD";
             this.panelAD.Size = new System.Drawing.Size(576, 294);
@@ -306,7 +315,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(385, 112);
+            this.button1.Location = new System.Drawing.Point(385, 60);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(173, 30);
             this.button1.TabIndex = 3;
@@ -319,7 +328,7 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.btnAddNewUser);
             this.groupBox2.Controls.Add(this.tbAddNewUser);
-            this.groupBox2.Location = new System.Drawing.Point(385, 166);
+            this.groupBox2.Location = new System.Drawing.Point(389, 100);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(182, 121);
             this.groupBox2.TabIndex = 2;
@@ -354,7 +363,7 @@
             // 
             // btnSwitchPassRestr
             // 
-            this.btnSwitchPassRestr.Location = new System.Drawing.Point(385, 59);
+            this.btnSwitchPassRestr.Location = new System.Drawing.Point(385, 13);
             this.btnSwitchPassRestr.Name = "btnSwitchPassRestr";
             this.btnSwitchPassRestr.Size = new System.Drawing.Size(173, 41);
             this.btnSwitchPassRestr.TabIndex = 1;
@@ -380,18 +389,21 @@
             this.listUsers.Size = new System.Drawing.Size(358, 277);
             this.listUsers.TabIndex = 0;
             // 
-            // dashboardToolStripMenuItem
+            // button_save_xml
             // 
-            this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
-            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.dashboardToolStripMenuItem.Text = "Dashboard";
-            this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
+            this.button_save_xml.Location = new System.Drawing.Point(385, 227);
+            this.button_save_xml.Name = "button_save_xml";
+            this.button_save_xml.Size = new System.Drawing.Size(173, 41);
+            this.button_save_xml.TabIndex = 3;
+            this.button_save_xml.Text = "Сохранить изменения";
+            this.button_save_xml.UseVisualStyleBackColor = true;
+            this.button_save_xml.Click += new System.EventHandler(this.button_save_xml_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(618, 346);
+            this.ClientSize = new System.Drawing.Size(603, 342);
             this.Controls.Add(this.panelAD);
             this.Controls.Add(this.panelLK);
             this.Controls.Add(this.menuStrip1);
@@ -452,6 +464,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
+        private System.Windows.Forms.Button button_save_xml;
     }
 }
 

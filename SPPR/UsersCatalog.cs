@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace AIS_DIBLOM
 {
-    class UsersCatalog
+    public class UsersCatalog
     {
         [XmlArray("UsersCatalog"), XmlArrayItem("User")]
         public List<User> Data { get; set; }
